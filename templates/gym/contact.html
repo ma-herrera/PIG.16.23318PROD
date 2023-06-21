@@ -1,0 +1,75 @@
+{% extends './base.html' %}
+{% load static %}
+{% block title %}Contacto{% endblock title %}
+
+{% block headStaticContent %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/gym/css/contact.css' %}"/>
+{% endblock headStaticContent %}
+
+{% block headerContent %}
+    {% include './header.html' %}
+    
+{% endblock headerContent %}
+
+{% block contenido %}
+<main class="mainContainer container-fluid">
+<div class="container col-md-6 mb-md-0 mb-6 ">
+    <div class="row vh-auto justify-content-center ">
+        <div class="rounded col-auto bg-light p-4">
+            <div class="formularioP">
+                <p class="fs-4 fw-bold">Contacto</p>
+                <img src="{% static '/img/powerfullGymLogo-RedAndBlack-Full.png' %}" width=75 alt="logo">
+            </div>
+           
+         {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert" id="success-message">
+            {{message}}
+        </div>
+          {% endfor %}
+
+        <form class="needs-validation" novalidate id="contact-form" name="contact-form" action="{% url 'contacto' %}" method="POST">
+              {% csrf_token %}
+            
+        <div class="row form-group">
+            {% for campo in contacto_form %}
+            
+            <div class="col-md-12">
+                <div class="md-form mb-0">
+                    <label for="name" class="">{{ campo.label }}</label>
+                    {{campo}}
+
+                    <div class="invalid-feedback">
+                        {% if campo.label == 'Email' %}
+                        Por favor ingresa una casilla de correo válida
+                        {% else %}
+                        Por favor completa este campo con tu {{campo.label | lower}}
+                        {% endif %}
+                        
+                    </div>
+                </div>
+                 <div>
+                    {{campo.errors}}
+                </div> 
+            </div>
+            
+            {% endfor %}
+        </div>
+        
+        <div class="text-center text-md-left mt-3">
+            <button class="btn btn-danger" type="submit">Enviar</button>
+        </div>
+    </form>
+
+     <div class="status"></div>
+    </div> 
+</div>
+
+</div>
+</main> 
+<script src="{% static 'gym/js/sign_up.js' %}"></script>
+{% endblock contenido %}
+
+{% block footerContent %}
+    {% include './footer.html' %}
+{% endblock footerContent %}

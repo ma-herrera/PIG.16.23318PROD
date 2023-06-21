@@ -1,0 +1,24 @@
+{% extends '../base_administracion.html' %}
+
+{% block titulo %}Eliminar tipos de actividad{% endblock%}
+
+{% block contenido %}
+<h1 class="mt-4">Tipos de actividad</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'home_administracion' %}">Administracion</a></li>
+    <li class="breadcrumb-item active">Eliminar tipos de actividad</li>
+</ol>
+
+
+<div class="card">
+    <div class="card-header">Eliminacion tipos de actividad</div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <p>Esta seguro que quiere eliminar el tipo de actividad "{{ object.nombre }}"?</p>
+            <input type="submit" value="Confirmar" class="btn btn-danger">
+        </form>
+        
+    </div>
+</div>
+{% endblock %}

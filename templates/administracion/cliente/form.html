@@ -1,0 +1,79 @@
+{% for campo in form %}
+    <!-- <div class="form-group"> -->
+
+        <!-- <div class="col-md-12">
+            <div class="md-form mb-2"> -->
+                <div class="form-group">
+                <label for="" class="form-label">{{campo.label}}</label>
+                {% if campo.field.widget.input_type == 'date' %}
+                    {% comment %}   
+                    {{campo}}
+                    {% endcomment %}
+                    <input
+                    type="{{campo.field.widget.input_type}}"
+                    name="{{campo.name}}"
+                    id="{{campo.name}}"
+                    value = "{{ campo.value  | date:'Y-m-d' }}"
+                    placeholder="Ingrese {{campo.name}}"
+                    >
+                    {% comment %}   
+                    class='{{campo.field.widget.attrs.class }}'
+                    placeholder="Ingrese {{campo.name}}"
+                    value = "{{ campo.value | date:'SHORT_DATE_FORMAT' }}"
+                    {% endcomment %}
+                {% elif campo.field.widget.input_type == 'checkbox'%}
+                    {% if campo.name == 'paseLibre' and cliente.paseLibre %}
+                        <input
+                        type="{{campo.field.widget.input_type}}" 
+                        name="{{campo.name}}"
+                        id="{{campo.name}}"
+                        class="{{campo.field.widget.attrs.class }}"
+                        checked
+                        value="{{ campo.value | default:'' }}"
+                        >
+                    {% elif campo.name == 'aptoFisico' and cliente.aptoFisico %}
+                        <input
+                        type="{{campo.field.widget.input_type}}" 
+                        name="{{campo.name}}"
+                        id="{{campo.name}}"
+                        class="{{campo.field.widget.attrs.class }}"
+                        checked
+                        value="{{ campo.value | default:'' }}"
+                        >
+                    {% else %}
+                        <input
+                        type="{{campo.field.widget.input_type}}" 
+                        name="{{campo.name}}"
+                        id="{{campo.name}}"
+                        class="{{campo.field.widget.attrs.class }}"
+                        value="{{ campo.value | default:'' }}"
+                        >
+                    {% endif %}
+                {% else %}
+                    <input
+                    type="{{campo.field.widget.input_type}}" 
+                    name="{{campo.name}}"
+                    id="{{campo.name}}"
+                    class="{{campo.field.widget.attrs.class }}"
+                    placeholder="Ingrese {{campo.name}}"
+                    value="{{ campo.value | default:'' }}"
+                    >
+                {% endif %}
+
+                {% comment %}
+                {{campo}}
+                {% endcomment %}    
+
+            </div>
+    <!-- </div> -->
+                <div>{{campo.errors}}</div>
+            <!-- </div>
+        </div> -->
+{% endfor %}
+
+<div class="row mt-3">
+    <div class="col-12">
+        <input type="submit" value="Guardar" class="btn btn-success">
+        <a href="{% url 'cliente_index_view' %}" class="btn btn-secondary">Cancelar</a>        
+    </div>
+</div>

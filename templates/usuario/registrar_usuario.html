@@ -1,0 +1,122 @@
+{% extends 'gym/base.html' %} 
+{% load static %}
+{% block title %}{{title}}{% endblock title %} 
+
+{%block contenido %}
+
+<div id="registroModal" class="modal " tabindex="-1" aria-labelledby="exampleModalLabel" role="document"aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <div class="registro">
+            <h1 class="modal-title fs-5" id="registroModalLabel">Sumate!</h1>
+          </div>
+          <div class="d-flex align-items-center">
+          <img src="{% static '/img/powerfullGymLogo-RedAndBlack-Full.png' %}" width=75 alt="logo">
+          </div>
+        </div>
+        
+        <div class="modal-body ">
+          <form class="row g-3 needs-validation" id="registrarse" action="{% url 'registrar_usuarios' %}"  method="POST" novalidate >
+            {% csrf_token %}
+            <div class="col-md-6">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombre" name="nombre" value="{{ form.nombre.value | default:'' }}"
+              placeholder="Ingrese su nombre" required />
+              <div class="invalid-feedback">Por favor, ingrese su nombre, el campo no puede estar vacio</div>
+              <div class="valid-feedback">Correcto!</div>
+              <div class="error">{{form.name.errors}}</div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="apellido" class="form-label">Apellido</label>
+              <input type="text" class="form-control" id="apellido" name="apellido" value="{{ form.apellido.value | default:'' }}"
+                placeholder="Ingrese su apellido" required />
+                <div class="invalid-feedback">Por favor, ingrese su apellido, el campo no puede estar vacio</div>
+              <div class="valid-feedback">Correcto!</div>
+              <div class="error">{{form.apellido.errors}}</div>
+            </div>
+            
+            <div class="col-md-6">
+              <label for="username" class="form-label">Usuario</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text" id="inputGroupPrepend">@</span>
+                <input type="text" class="form-control" id="username" name="username" value="{{ form.username.value | default:'' }}"
+                  aria-describedby="inputGroupPrepend" placeholder="Ingrese su usuario" required />
+                <div class="invalid-feedback">Por favor, elija un nombre de usuario</div>
+                <div class="valid-feedback">Correcto!</div>
+              </div>
+              <div class="error">{{form.username.errors}}</div>
+            </div>
+            
+            <div class="col-md-6">
+              <label for="dni" class="form-label">DNI</label>
+              <input type="number" class="form-control" id="documento" name="documento" value="{{ form.documento.value | default:'' }}"
+              pattern="[0-9]{8}" placeholder="Ingrese su DNI" required />
+              <div class="invalid-feedback">Por favor, escriba un número de DNI válido</div>
+              <div class="valid-feedback">Correcto!</div>
+              <div class="error">{{form.dni.errors}}</div>
+            </div>
+            
+            <div class="col-md-12">
+              <label for="email" class="form-label">Email</label>
+              <input type="Email" class="form-control" id="email" name="email" value="{{ form.email.value | default:'' }}"
+                placeholder="Ingrese su correo" required />
+              <div class="invalid-feedback">Por favor, ingrese una casilla de correo válida</div>
+              <div class="valid-feedback">Correcto!</div>
+              <div class="error">{{form.email.errors}}</div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Contraseña</label>
+              <input id="check" type="checkbox" onclick="togglePassword()">
+                <label class="check-label">mostrar</label>
+                <input type="password" class="form-control" id="password1" name="password1" value="{{ form.password1.value | default:'' }}"
+                 oninput="verificarFortaleza()" placeholder="Ingrese su contraseña" required/>
+                <span class="verificarPass"> 
+                  <p id="mensajePass"></p>
+                </span>
+              <div class="invalid-feedback">Por favor, ingrese una contraseña, el campo no puede estar vacío</div>
+              <div class="error">{{form.password1.errors}}</div>
+            </div>
+           
+            <div class="col-md-6">
+              <label class="form-label">Repita la contraseña</label>
+                <input type="password" id="password2" name="password2" value="{{ form.password2.value | default:'' }}"
+                 class="form-control" placeholder="Reingrese su contraseña" required/>
+                <div class="invalid-feedback">Por favor, reingrese su contraseña, el campo no puede estar vacío</div>
+              <div class="error">{{form.password2.errors}}</div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required />
+                <label class="form-check-label" for="invalidCheck">Acepto los términos y condiciones</label>
+                <div class="invalid-feedback"> Debe aceptar las condiciones para registrarse</div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-danger">Registrarse</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+ <script>
+  /*------------- Mostrar contraseña -------------*/
+
+  function togglePassword() {
+    var password1 = document.getElementById("password1");
+    var check = document.getElementById("check");
+
+    if (check.checked) 
+      password1.type = "text";
+    else
+      password1.type = "password";
+  }
+
+ </script>
+{% endblock contenido %}

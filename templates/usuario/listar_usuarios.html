@@ -1,0 +1,78 @@
+{% extends 'administracion/base_administracion.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock title %}
+
+{% block contenido %}
+
+<h1 class="mt-4">Lista de usuarios</h1>
+<div class="card">
+{% include 'usuario/buscar_usuario.html' %}
+</div>
+<br>
+{% if object_list %}
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Usuarios</div>
+    </div>
+    <div class="table-stats order-table ov-h">
+        <table class="table text-center">
+            <thead>
+                <tr >
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Documento</th>
+                    <th>Email</th>
+                    <th>Foto de perfil</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in object_list %}
+                <tr>
+                    <td>{{usuario.id}}</td>
+                    <td>{{usuario.username}}</td>
+                    <td>{{usuario.nombre}}</td>
+                    <td>{{usuario.apellido}}</td>
+                    <td>{{usuario.documento}}</td>
+                    <td>{{usuario.email}}</td>
+                    <td>
+                        {% if usuario.imagen %}
+                            <img src="{{ usuario.imagen.url }}" class="rounded-circle" alt="Perfil" width="50" height="50" >
+                        {% else %}
+                        <img src="{% static '/img/predeterminada.png' %}" alt="perfil" width="50" class="rounded-circle" />
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'editar_usuario' usuario.id %}" title="Editar" class="btn btn-warning">Editar<i class="fas fa-trash"></i></a>
+                        <a href="{% url 'eliminar_usuario' usuario.id %}" title="Eliminar" class="btn btn-danger">Eliminar<i class="fas fa-trash"></i></a>
+                        {% comment %} <button type="button" class="btn btn-danger col-6" id="eliminarCuenta" data-bs-toggle="modal" data-bs-target="#eliminarCuentaModal" >Eliminar cuenta</button> {% endcomment %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div>
+            {% include 'usuario/paginator_usuario.html' %}
+        </div>
+    </div>
+</div>
+{% else %}
+<h1> No existen usuarios registrados con los datos ingresados</h1>
+{% endif %}
+{% if messages %}
+   {% for message in messages %}
+       <script>
+           Swal.fire({
+            'title': "{% if message.tags == 'success' %}Excelente{% else %}Error{% endif %}",
+            'text': "{{ message }}",
+            'icon': "{% if message.tags == 'success' %}Excelente{% else %}Error{% endif %}",
+           })
+       </script>
+   {% endfor %}
+  {% endif %} 
+
+{% comment %} {% include 'usuario/eliminar_usuario.html' %} {% endcomment %}
+{% endblock contenido %}

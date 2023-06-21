@@ -1,0 +1,62 @@
+{% extends '../base_administracion.html' %}
+
+{% block titulo %}Clientes{% endblock%}
+
+{% block contenido %}
+<br><br><br>
+<h1 class="mt-4">Clientes</h1>
+
+<!-- Se harcodea el campo que se va a usar para el campo de busqueda (no implementado TO DO) -->
+
+{% include './buscar.html' %}
+<br>
+<div class="card">
+    <div class="card-body">
+        <a name="" id="" class="btn btn-success" href="{% url 'cliente_nuevo_view' %}" role="button"> <i class="fa-solid fa-circle-plus"></i>Nuevo</a>
+        <!-- bs5-table-defaul -->
+        <table class="table">
+         <!-- class="table"> -->
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Apellido</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in qs_cliente %}
+                    <tr>
+                        <td>{{cliente.id}}</td>
+                        <td>{{cliente.apellido}}</td>
+                        <td>{{cliente.nombre}}</td>
+                        <td>
+                            <a href="{% url 'cliente_editar_view' cliente.id %}" title="Editar" class="btn btn-warning">Editar<i class="fas fa-pencil"></i></a>
+                            <a href="{% url 'cliente_eliminar_view' cliente.id %}" title="Eliminar" class="btn btn-danger">Eliminar<i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        {% comment %} <div class="row">
+            <div class="col-12">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item"><a class="page-link" href="#"><<</a></li>
+                      <li class="page-item"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item"><a class="page-link" href="#">>></a></li>
+                    </ul>
+                  </nav>
+            </div>
+        </div> 
+        {% endcomment %}
+    </div>
+    <div class="card-footer text-muted">
+        Footer
+    </div>
+</div>
+
+{% endblock %}

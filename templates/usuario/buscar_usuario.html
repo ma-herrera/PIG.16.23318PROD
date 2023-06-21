@@ -1,0 +1,39 @@
+
+<div class="card">
+    <div class="card-header">
+        <h3>Filtros</h3>
+    </div>
+    <div class="card-body">
+        
+        <form id="filtro-form" action="" method= "GET">
+            <div class="row">
+                <div class="col-3">
+                    <div class="md-form mb-0">
+                        <label for="name" class="">Nombre</label>
+                        
+                        <input type="text" 
+                            id="nombre" 
+                            name="nombre"
+                            placeholder="Ingrese el nombre" 
+                            class="form-control"
+                            value="{{ request.GET.nombre }}">
+                    </div>
+                </div>
+                
+                <div class="col-3 ">
+                    <button class="btn btn-primary mt-4" type="submit">Buscar</button>
+                    {% if request.GET.nombre %}
+                    <a id="eliminar-filtro" href="" class="btn btn-danger mt-4">Eliminar filtro</a>
+                   {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    document.getElementById('eliminar-filtro').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('nombre').value = '';
+        document.getElementById('filtro-form').submit();
+    });
+</script>

@@ -1,0 +1,22 @@
+<!-- permite la edición del tipo de actividad -->
+{% extends '../base_administracion.html' %}
+
+{% block titulo %}Editar datos del cliente{% endblock%}
+
+{% block contenido %}
+<h1 class="mt-4">Clientes</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'home_administracion' %}">Administracion</a></li>
+    <li class="breadcrumb-item active">Editar datos del cliente</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">Editar datos del cliente</div>
+    <div class="card-body">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% include 'administracion/cliente/form.html' %}
+        </form>
+    </div>
+</div>
+{% endblock %}

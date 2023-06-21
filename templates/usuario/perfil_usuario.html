@@ -1,0 +1,114 @@
+{% extends 'gym/base.html' %}
+{% load static %}
+{% block title %}Perfil usuario{% endblock%}
+
+{% block headerContent %}
+    {% include 'gym/header.html' %}
+    
+{% endblock headerContent %}
+
+{%block contenido %}
+
+<br><br><br><br><br>
+<div class="container card col-6 p-3">
+    <div class="card-header">
+        <h2 class="card-title text-center">{{ user.nombre }} bienvenido/a a tu perfil</h2>
+        <div class="d-flex justify-content-between p-4 border border-danger border-2 rounded">
+            <div class="user-info">
+              <p><span class="fw-bold">Usuario:</span> {{ user.username }}</p>
+              <p><span class="fw-bold">Nombre:</span> {{ user.nombre }}</p>
+              <p><span class="fw-bold">Apellido:</span> {{ user.apellido }}</p>
+              <p><span class="fw-bold">DNI:</span> {{ user.documento }}</p>
+              <p><span class="fw-bold">Correo electrónico:</span> {{ user.email }}</p>
+            </div>
+            <div class="user-photo">
+                  {% if user.imagen %}
+                    <img src="{{ user.imagen.url }}" alt="perfil" name="imagen" width="200" class="rounded-circle" id="user-image" />
+                  {% else %}
+                    <img src="{% static 'img/predeterminada.png' %}" alt="perfil" width="200" class="rounded-circle" id="user-image" />
+                  {% endif %}
+            </div>
+        </div>
+        
+        
+        <div class= "d-flex justify-content-between my-2 ">
+          <button type="button" class="btn btn-success col-12" id="contrasenia" data-bs-toggle="modal"
+          data-bs-target="#cambiarContraseñaModal" >Cambiar contraseña</button>
+          <!-- <button type="button" class="btn btn-danger col-6" id="eliminarCuenta" data-bs-toggle="modal"
+          data-bs-target="#eliminarCuentaModal" >Eliminar cuenta</button> -->
+        </div>
+        
+    
+    <div class="dropdown">
+      <a href="#" title="Editar" class="btn btn-warning dropdown-toggle col-12" id="dropdownPerfil2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Editar Perfil<i class="fas fa-trash"></i></a>
+    
+        <div class="dropdown-menu" id="dropdownPerfil23" aria-labelledby="dropdownPerfil">
+          <div class="card-body">
+            <form class="row g-3 needs-validation"  action=""  method="POST" enctype="multipart/form-data" novalidate >
+              {% csrf_token %}
+              <div class="col-md-6">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ form.nombre.value | default:'' }}"
+                placeholder="Ingrese su nombre" required />
+                <div class="invalid-feedback">Por favor, ingrese su nombre, el campo no puede estar vacio</div>
+                <div class="valid-feedback">Correcto!</div>
+                <div class="error">{{form.name.errors}}</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" value="{{ form.apellido.value | default:'' }}"
+                  placeholder="Ingrese su apellido" required />
+                  <div class="invalid-feedback">Por favor, ingrese su apellido, el campo no puede estar vacio</div>
+                <div class="valid-feedback">Correcto!</div>
+                <div class="error">{{form.apellido.errors}}</div>
+              </div>
+                                 
+              <div class="col-md-12">
+                <label for="email" class="form-label">Email</label>
+                <input type="Email" class="form-control" id="email" name="email" value="{{ form.email.value | default:'' }}"
+                  placeholder="Ingrese su correo" required />
+                <div class="invalid-feedback">Por favor, ingrese una casilla de correo válida</div>
+                <div class="valid-feedback">Correcto!</div>
+                <div class="error">{{form.email.errors}}</div>
+              </div>
+              <div class="col-12">
+                <label class="btn btn-primary">
+                  <i class="fas fa-upload"></i> Cambiar Imagen
+                  <input type="file" id="photo-upload" name="imagen" style="display: none;" onchange="loadImage(this)" accept="image/*" />
+                </label>
+              </div>
+            
+              <div class="modal-footer gap-2">
+                  <a class="btn btn-secondary" >Cancelar</a>
+                <button type="submit" class="btn btn-danger">Actualizar</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+    
+ 
+
+       {% comment %} {% include 'usuario/eliminar_usuario.html' %} {% endcomment %}
+       {% include 'usuario/cambiar_password.html' %}  
+   <script src="{% static 'gym/js/sign_up.js' %}"></script> 
+   {% if messages %}
+   {% for message in messages %}
+       <script>
+           Swal.fire({
+            'title': "{% if message.tags == 'success' %}Bien hecho{% else %}Error{% endif %}",
+            'text': "{{ message }}",
+            'icon': "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+           })
+       </script>
+   {% endfor %}
+  {% endif %}
+
+{% endblock contenido %}
+{% block footerContent %}
+    {% include 'gym/footer.html' %}
+{% endblock footerContent %}

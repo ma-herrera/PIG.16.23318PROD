@@ -1,0 +1,8 @@
+.modal-backdrop {
+  z-index: -1;
+}
+.formularioP{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+} 

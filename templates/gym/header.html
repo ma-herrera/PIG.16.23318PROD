@@ -1,0 +1,68 @@
+<header >
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'gym/css/navbar.css' %}" />
+  <nav class="navbar navbar-expand-md  fixed-top bg-white">
+    <div class="container-fluid px-5">
+      <a class="navbar-brand d-flex flex-column" href="{% url 'home' %}">
+        <img
+          src="{% static '/img/powerfullGymLogo-RedAndBlack-Full.png'%}"
+          height="40px"
+          width="auto"
+          alt="Logo de Powerful Team"/></a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0 mx-auto">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'home' %}">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'actividades' %}">Actividades</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'contacto' %}" tabindex="-1" aria-disabled="true">Contacto</a>
+          </li>
+
+          {% if user.is_staff %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'tipo_de_actividad_index_view' %}" tabindex="-1" aria-disabled="true">Administracion</a>
+          </li>
+          {% endif%}
+        </ul>
+      </div>
+
+      {% if user.is_authenticated %}
+      <div class="dropdown text-end">
+        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"aria-expanded="false" >
+                {% if user.imagen %}
+                  <img src="{{ user.imagen.url }}" name="imagen" alt="perfil" width="50" class="rounded-circle" id="user-image" />
+                {% else %}
+                  <img src="{% static '/img/predeterminada.png' %}" alt="perfil" width="50" class="rounded-circle" id="user-image" />
+                {% endif %}
+        </a>
+        <p>Hola {{user.username}}</p>
+        <ul class="dropdown-menu text-small w-auto">
+          <li><a class="dropdown-item text-nowrap" href="{% url 'perfil_usuario' user.id %}">Perfil</a></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li><a class="dropdown-item text-nowrap" href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a ></li>
+        </ul>
+      </div>
+      
+      {% else %}
+      <div class="col-md-3 text-end" id="navbarCollapse">
+        <button type="button" class="btn btn-danger" id="login" data-bs-toggle="modal"
+        data-bs-target="#loginModal" >Iniciar Sesion</button>
+        <button type="button" class="btn btn-danger" id="registro" data-bs-toggle="modal"
+        data-bs-target="#registroModal">¡Sumarse!</button>
+      </div>
+      {% endif %}
+
+      {% include 'usuario/registrar_usuario.html' %}
+      {% include 'usuario/login.html' %}
+    </div>
+  </nav>
+</header>

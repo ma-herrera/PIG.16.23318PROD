@@ -1,0 +1,55 @@
+{% for campo in form %}
+    <!-- <div class="form-group"> -->
+
+        <!-- <div class="col-md-12">
+            <div class="md-form mb-2"> -->
+                <div class="form-group">
+                <label for="" class="form-label">{{campo.label}}</label>
+
+                {% if campo.field.widget.input_type == 'date' %}
+                    {% comment %}   
+                    {{campo}}
+                    {% endcomment %}
+                    <input
+                    type="{{campo.field.widget.input_type}}"
+                    name="{{campo.name}}"
+                    id="{{campo.name}}"
+                    value = "{{ campo.value  | date:'Y-m-d' }}"
+                    placeholder="Ingrese {{campo.name}}"
+                    >
+                {% else %}
+                    {% if campo.name == 'cuil' %}
+                        <input
+                        type="{{campo.field.widget.input_type}}"
+                        name="{{campo.name}}"
+                        id="{{campo.name}}"
+                        value = "{{ campo.value  | default:''}}"
+                        placeholder="Ingrese {{campo.name}}"
+                        maxlength="11"
+                        >
+                    {% else %}
+                        <input
+                        type="{{campo.field.widget.input_type}}" 
+                        name="{{campo.name}}"
+                        id="{{campo.name}}"
+                        class="{{campo.field.widget.attrs.class }}"
+                        placeholder="Ingrese {{campo.name}}"
+                        value="{{ campo.value | default:'' }}"
+                        >
+                    {% endif %}
+                {% endif %}
+
+
+            </div>
+    <!-- </div> -->
+                <div>{{campo.errors}}</div>
+            <!-- </div>
+        </div> -->
+{% endfor %}
+
+<div class="row mt-3">
+    <div class="col-12">
+        <input type="submit" value="Guardar" class="btn btn-success">
+        <a href="{% url 'profesor_index_view' %}" class="btn btn-secondary">Cancelar</a>        
+    </div>
+</div>

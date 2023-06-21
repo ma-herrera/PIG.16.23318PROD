@@ -1,0 +1,22 @@
+{% extends '../base_administracion.html' %}
+
+{% block titulo %}Nuevo Tipo de actividad{% endblock%}
+
+{% block contenido %}
+<h1 class="mt-4">Tipos de actividad</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'home_administracion' %}">Administracion</a></li>
+    <li class="breadcrumb-item active">Nuevo tipo de actividad</li>
+</ol>
+
+
+<div class="card">
+    <div class="card-header">Creacion de tipos de actividad</div>
+    <div class="card-body">
+        <form action="{% url 'tipo_de_actividad_nuevo_view' %}" method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            {% include 'administracion/tipo_de_actividad/form.html' %}
+        </form>
+    </div>
+</div>
+{% endblock %}

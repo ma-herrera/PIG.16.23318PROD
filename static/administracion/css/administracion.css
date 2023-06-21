@@ -1,0 +1,17 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+  }
+  
+  /* Padding below the footer and lighter body text */
+  
+  body {
+    padding-top: 6.5rem;
+    padding-bottom: 5rem;
+    color: #5a5a5a;
+    /* background-color: rgb(238, 218, 218); */
+    min-height: 100vh;
+  }
+  

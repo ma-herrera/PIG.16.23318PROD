@@ -1,0 +1,47 @@
+{% extends './base.html' %}
+{% block title %}{{title}}{% endblock title %}
+{% load static %}
+
+{% block headStyles %}
+<!-- Si no se usan las tarjetas y los circulos para imagenes eliminar los estilos -->
+<style>
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+</style>
+{% endblock headStyles %}
+
+{% block headStaticContent %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/gym/css/actividades.css' %}"/>
+{% endblock headStaticContent %}
+
+{% load static %}
+
+<!-- BODY -->
+{% block headerContent %}
+    {% include './header.html' %}
+{% endblock headerContent %}
+
+{% block contenido %}
+
+<div class="container marketing">
+
+</div><!-- /.container .marketing -->
+<script src="{% static '/gym/js/actividades.js' %}"></script>
+{% endblock contenido %}
+
+
+{% block footerContent %}
+    {% include './footer.html' %}
+{% endblock footerContent %}

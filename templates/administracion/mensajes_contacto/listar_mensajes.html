@@ -1,0 +1,67 @@
+{% extends 'administracion/base_administracion.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock title %}
+
+{% block contenido %}
+
+<h1 class="mt-4">Lista de mensajes</h1>
+<!-- <div class="card"> -->
+<!-- {% include 'administracion/mensajes_contacto/buscar_mensaje.html' %} -->
+<!-- </div> -->
+<br>
+{% if object_list %}
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Mensajes</div>
+    </div>
+    <div class="table-stats order-table ov-h">
+        <table class="table text-center">
+            <thead>
+                <tr >
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Asunto</th>
+                    <th>Mensaje</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mensaje in mensajes %}
+                <tr>
+                    <td>{{ mensaje.id }}</td>
+                    <td>{{ mensaje.nombre }}</td>
+                    <td>{{ mensaje.email }}</td>
+                    <td>{{ mensaje.asunto }}</td>
+                    <td>{{ mensaje.mensaje }}</td>
+                    <td>
+                        <!-- <a href="#" title="Editar" class="btn btn-warning">Ver<i class="fas fa-trash"></i></a> -->
+                        <a href="{% url 'eliminar_mensaje' mensaje.id %}" title="Eliminar" class="btn btn-danger">Eliminar<i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div>
+            {% include 'administracion/mensajes_contacto/paginator_mensajes.html' %}
+        </div>
+    </div>
+</div>
+{% else %}
+<h1> No existen mensajes recibidos</h1>
+{% endif %}
+{% if messages %}
+   {% for message in messages %}
+       <script>
+           Swal.fire({
+            'title': "{% if message.tags == 'success' %}Excelente{% else %}Error{% endif %}",
+            'text': "{{ message }}",
+            'icon': "{% if message.tags == 'success' %}Excelente{% else %}Error{% endif %}",
+           })
+       </script>
+   {% endfor %}
+  {% endif %} 
+
+
+{% endblock contenido %}
