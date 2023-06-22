@@ -3,12 +3,14 @@ from django.template import loader
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from administracion.forms import TipoDeActividadForm, ProfesorForm, ClienteForm
 from administracion.models import TipoDeActividad, Profesor, Persona, Cliente
 from usuario.mixin import has_permission, LoginYSuperUsuarioMixin
 
 from django.contrib import messages
+
+from django.core.paginator import Paginator
 
 # Create your views here.
 @has_permission
@@ -43,9 +45,27 @@ class TipoDeActividadIndexListView(LoginYSuperUsuarioMixin, ListView):
     def get_queryset(self):
         if (self.request.method == 'GET' and self.request.GET and self.request.GET['nombre']):
             snombre = self.request.GET['nombre']
-            return TipoDeActividad.objects.filter(nombre=snombre)
+            return TipoDeActividad.objects.filter(nombre=snombre).order_by('id').values()
         else:
-            return TipoDeActividad.objects.all()
+            return TipoDeActividad.objects.all().order_by('nombre', 'id').values()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = self.get_queryset()
+
+        paginator = Paginator(queryset, self.paginate_by)
+        page = self.request.GET.get('page',1)
+
+        try:
+            actividades = paginator.page(page)
+        except Exception:
+            raise Http404
+
+        context['entity'] = actividades
+        context['paginator'] = paginator
+        context['messages'] = messages.get_messages(self.request)
+
+        return context
 
 class TipoDeActividadNuevoView(LoginYSuperUsuarioMixin, CreateView):
     model = TipoDeActividad
@@ -92,11 +112,31 @@ class ProfesorIndexListView(LoginYSuperUsuarioMixin, ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        if (self.request.method == 'GET' and self.request.GET and self.request.GET['apellido']):
+        # if (self.request.method == 'GET' and self.request.GET and self.request.GET['apellido']):
+        if (self.request.method == 'GET' and 'apellido' in self.request.GET):
             sapellido = self.request.GET['apellido']
-            return Profesor.objects.filter(apellido=sapellido).order_by('id')
+            return Profesor.objects.filter(apellido=sapellido).order_by('id').values()
         else:
-            return Profesor.objects.all()
+            return Profesor.objects.all().order_by('apellido', 'nombre', '-id').values()
+
+    # Paginador
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = self.get_queryset()
+
+        paginator = Paginator(queryset, self.paginate_by)
+        page = self.request.GET.get('page',1)
+
+        try:
+            profesores = paginator.page(page)
+        except Exception:
+            raise Http404
+
+        context['entity'] = profesores
+        context['paginator'] = paginator
+        context['messages'] = messages.get_messages(self.request)
+
+        return context
 
 
 class ProfesorNuevoView(LoginYSuperUsuarioMixin, CreateView):
@@ -144,11 +184,30 @@ class ClienteIndexListView(LoginYSuperUsuarioMixin, ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        if (self.request.method == 'GET' and self.request.GET and self.request.GET['apellido']):
+        if (self.request.method == 'GET' and 'apellido' in self.request.GET):
             sapellido = self.request.GET['apellido']
-            return Cliente.objects.filter(apellido=sapellido)
+            return Cliente.objects.filter(apellido=sapellido).order_by('id').values()
         else:
-            return Cliente.objects.all()
+            return Cliente.objects.all().order_by('apellido', 'nombre', '-id').values()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = self.get_queryset()
+
+        paginator = Paginator(queryset, self.paginate_by)
+        page = self.request.GET.get('page',1)
+
+        try:
+            clientes = paginator.page(page)
+        except Exception:
+            raise Http404
+
+        context['entity'] = clientes
+        context['paginator'] = paginator
+        context['messages'] = messages.get_messages(self.request)
+
+        return context   
+
 
 class ClienteNuevoView(LoginYSuperUsuarioMixin, CreateView):
     model = Cliente
