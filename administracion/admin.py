@@ -24,7 +24,6 @@ admin.site.register(TipoDeActividad)
 admin.site.register(Actividad)
 admin.site.register(Inscripcion)
 admin.site.register(Contacto)
-admin.site
 
 class GymAdminSite(admin.AdminSite):
     site_header = 'Powerful Gym'
